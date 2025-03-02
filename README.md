@@ -6,11 +6,20 @@ Cette api permet de sauvegarder les transcripts des joueurs.
 
 L'api utilise laravel 12.
 
-- Elle requier php 8.
-- Pour utilise sqlite, il faudra installer sqlite3 sur le système hôte.
+
+- L'api requier php 8.
+- On aura besoin de composer
+- Pour utiliser sqlite, il faudra installer sqlite3 sur le système hôte.
 
 ```
 sudo apt-get install sqlite3
+```
+
+- Récupérer le projet depuis github
+- Installation des dépendances
+
+```
+composer install
 ```
 
 - Créer le fichier .env à partir du .env.example
