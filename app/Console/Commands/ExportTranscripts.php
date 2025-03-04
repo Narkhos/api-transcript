@@ -47,7 +47,7 @@ class ExportTranscripts extends Command
                 ->pluck('text');
 
             // Concaténer les textes en une seule chaîne
-            $content = $transcripts->filter()->implode("\n");
+            $content = $transcripts->filter()->implode("\n\n");
 
             // Définir le chemin du fichier
             $filePath = "$directory/$uuid.txt";
