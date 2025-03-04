@@ -8,12 +8,12 @@ Route::post(
     [TranscriptController::class, 'store']
 );
 
-Route::get(
-    '/transcripts',
-    [TranscriptController::class, 'index']
-);
+// Route::get(
+//     '/transcripts',
+//     [TranscriptController::class, 'index']
+// );
 
-Route::get(
-    '/games',
-    [TranscriptController::class, 'games']
-);
+// Route::get(
+//     '/games',
+//     [TranscriptController::class, 'games']
+// );
