@@ -46,11 +46,17 @@ class ExportTranscripts extends Command
                 ->orderBy('turn', 'asc')
                 ->pluck('text');
 
+            // Récupérer le timestamp du premier enregistrement
+            $firstTranscript = Transcript::where('game_uuid', $uuid)
+                ->orderBy('turn', 'asc')
+                ->first();
+            $timestamp = $firstTranscript->created_at->format('Ymd_His');
+
             // Concaténer les textes en une seule chaîne
             $content = $transcripts->filter()->implode("\n\n");
 
             // Définir le chemin du fichier
-            $filePath = "$directory/$uuid.txt";
+            $filePath = "$directory/{$timestamp}_$uuid.txt";
 
             // Écrire le fichier
             Storage::put($filePath, $content);
