@@ -55,7 +55,7 @@ class ExportTranscripts extends Command
             // Écrire le fichier
             Storage::put($filePath, $content);
 
-            $this->info("Fichier exporté : storage/app/$filePath");
+            $this->info("Fichier exporté : storage/app/private/$filePath");
         }
 
         $this->info('Export terminé !');
