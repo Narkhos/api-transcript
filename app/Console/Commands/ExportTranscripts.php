@@ -13,7 +13,8 @@ class ExportTranscripts extends Command
      *
      * @var string
      */
-    protected $signature = 'transcript:export';
+    protected $signature = 'transcript:export {date? : La date des transcripts à exporter (format YYYY-MM-DD)} {--min-turns=0 : Le nombre minimum de tours pour inclure une partie}';
+
 
     /**
      * The console command description.
@@ -27,8 +28,15 @@ class ExportTranscripts extends Command
      */
     public function handle()
     {
+        $date = $this->argument('date');
+        $minTurns = $this->option('min-turns');
+
         // Récupérer tous les UUID uniques
-        $uuids = Transcript::distinct()->pluck('game_uuid');
+        $uuids = Transcript::distinct()
+            ->when($date, function ($query, $date) {
+                return $query->whereDate('created_at', $date);
+            })
+            ->pluck('game_uuid');
 
         // Vérifier s'il y a des données à exporter
         if ($uuids->isEmpty()) {
@@ -41,6 +49,13 @@ class ExportTranscripts extends Command
         Storage::makeDirectory($directory);
 
         foreach ($uuids as $uuid) {
+            // Vérifier le nombre de tours pour cet UUID
+            $turnCount = Transcript::where('game_uuid', $uuid)->count();
+            if ($turnCount < $minTurns) {
+                $this->info("UUID $uuid ignoré : $turnCount tours (minimum : $minTurns)");
+                continue;
+            }
+
             // Récupérer les lignes pour cet UUID, triées par "turn"
             $transcripts = Transcript::where('game_uuid', $uuid)
                 ->orderBy('turn', 'asc')
